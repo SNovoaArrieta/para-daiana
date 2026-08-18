@@ -142,6 +142,7 @@ let lines = 0;
 let score = 0;
 let level = 1;
 let gameOver = false;
+let tetrisStarted = false;
 let pieceBag = [];
 
 const pieces = [
@@ -233,14 +234,14 @@ function spawnPiece(){
 
 function scheduleTetris(){
   clearInterval(tetrisTimer);
-  if(!gameOver){
+  if(tetrisStarted && !gameOver){
     const speed = Math.max(95, 560-(level-1)*55);
     tetrisTimer = setInterval(tick,speed);
   }
 }
 
 function tick(){
-  if(gameOver) return;
+  if(!tetrisStarted || gameOver) return;
   if(canPlace(current,currentX,currentY+1)){
     currentY++;
   }else{
@@ -252,7 +253,7 @@ function tick(){
 }
 
 function rotatePiece(){
-  if(gameOver) return;
+  if(!tetrisStarted || gameOver) return;
   const rotated = current[0].map((_,i)=>current.map(row=>row[i]).reverse());
   for(const offset of [0,-1,1,-2,2]){
     if(canPlace(rotated,currentX+offset,currentY)){
@@ -265,7 +266,7 @@ function rotatePiece(){
 }
 
 function movePiece(dx){
-  if(gameOver) return;
+  if(!tetrisStarted || gameOver) return;
   if(canPlace(current,currentX+dx,currentY)){
     currentX += dx;
     renderTetris();
@@ -273,7 +274,7 @@ function movePiece(dx){
 }
 
 function dropPiece(){
-  if(gameOver) return;
+  if(!tetrisStarted || gameOver) return;
   if(canPlace(current,currentX,currentY+1)){
     currentY++;
     score++;
@@ -287,7 +288,7 @@ function dropPiece(){
 }
 
 function hardDrop(){
-  if(gameOver) return;
+  if(!tetrisStarted || gameOver) return;
   let distance = 0;
   while(canPlace(current,currentX,currentY+1)){
     currentY++;
@@ -306,23 +307,25 @@ function renderTetris(){
 
   const display = board.map(row=>[...row]);
 
-  let ghostY = currentY;
-  while(canPlace(current,currentX,ghostY+1)) ghostY++;
-  current.forEach((row,r)=>{
-    row.forEach((v,c)=>{
-      if(v && ghostY+r>=0 && display[ghostY+r][currentX+c]===0){
-        display[ghostY+r][currentX+c]=3;
-      }
+  if(current){
+    let ghostY = currentY;
+    while(canPlace(current,currentX,ghostY+1)) ghostY++;
+    current.forEach((row,r)=>{
+      row.forEach((v,c)=>{
+        if(v && ghostY+r>=0 && display[ghostY+r][currentX+c]===0){
+          display[ghostY+r][currentX+c]=3;
+        }
+      });
     });
-  });
 
-  current.forEach((row,r)=>{
-    row.forEach((v,c)=>{
-      if(v && currentY+r>=0 && currentY+r<ROWS && currentX+c>=0 && currentX+c<COLS){
-        display[currentY+r][currentX+c]=2;
-      }
+    current.forEach((row,r)=>{
+      row.forEach((v,c)=>{
+        if(v && currentY+r>=0 && currentY+r<ROWS && currentX+c>=0 && currentX+c<COLS){
+          display[currentY+r][currentX+c]=2;
+        }
+      });
     });
-  });
+  }
 
   display.forEach(row=>{
     row.forEach(v=>{
@@ -332,10 +335,16 @@ function renderTetris(){
     });
   });
   el.classList.toggle('game-over',gameOver);
-  el.setAttribute('aria-label',gameOver?'Fin de la partida. Reinicia para volver a jugar.':'Tetris en curso');
+  const stateLabel = !tetrisStarted
+    ? 'Tetris listo para jugar.'
+    : gameOver
+      ? 'Fin de la partida. Reinicia para volver a jugar.'
+      : 'Tetris en curso';
+  el.setAttribute('aria-label',stateLabel);
 }
 
 function resetTetris(){
+  tetrisStarted = true;
   board = emptyBoard();
   lines = 0;
   score = 0;
@@ -345,8 +354,17 @@ function resetTetris(){
   document.getElementById('lines').textContent = '0';
   document.getElementById('level').textContent = '1';
   document.getElementById('score').textContent = '0';
+  document.getElementById('tetrisStartButton').textContent = 'reiniciar';
   spawnPiece();
   scheduleTetris();
+  renderTetris();
+}
+
+function prepareTetris(){
+  clearInterval(tetrisTimer);
+  board = emptyBoard();
+  current = null;
+  tetrisStarted = false;
   renderTetris();
 }
 
@@ -404,5 +422,5 @@ document.addEventListener('click',e=>{
 });
 
 seedToys();
-resetTetris();
+prepareTetris();
 window.addEventListener('resize',seedToys);

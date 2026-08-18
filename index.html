@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#f3ede8" />
+  <title>Para bonita</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="wrap">
+    <section class="card hero">
+      <div class="cat" aria-hidden="true">
+        <div class="tail"></div>
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+        <div class="head">
+          <div class="eye left"></div>
+          <div class="eye right"></div>
+          <div class="nose"></div>
+          <div class="mouth"></div>
+        </div>
+      </div>
+
+      <h1>Bonita, hice esto para ti</h1>
+      <p class="lead">
+        Ayer me dijiste que era uno de esos días que querías hacerte bolita y hoy no quería llegar con el típico “¿estás bien?”.
+        Así que hice esto para que tengas algo con qué distraerte un rato.
+        No tienes que contarme nada ni ponerte de buenas porque sí. Solo úsalo y ya.
+      </p>
+    </section>
+
+    <section class="card section">
+      <h2>¿Qué necesitas?</h2>
+      <p class="sub">No lo pienses tanto. Toca cualquiera.</p>
+
+      <div class="grid">
+        <button class="action" onclick="showMessage('acompanar')">
+          Aquí estoy
+          <small>Sin interrogatorio incluido.</small>
+        </button>
+        <button class="action" onclick="showMessage('molestar')">
+          Moléstame
+          <small>Porque tampoco te voy a dejar toda seria.</small>
+        </button>
+        <button class="action" onclick="showMessage('nada')">
+          No quiero hacer nada
+          <small>Respuesta completamente válida.</small>
+        </button>
+        <button class="action" onclick="showMessage('bonito')">
+          Dime algo
+        </button>
+        <button class="action dark" onclick="showMessage('sofi')">
+          Necesito a Sofi
+          <small>Bueno, esa sí estaba fácil.</small>
+        </button>
+      </div>
+
+      <div id="message" class="message">
+        Puedes quedarte aquí sin hacer absolutamente nada. También sirve.
+      </div>
+    </section>
+
+    <section class="card section">
+      <h2>Saca cosas de la cabeza</h2>
+      <p class="sub">Toca las palabras. No tienen ninguna ciencia, solo desaparecen.</p>
+      <div class="toy-zone" id="toyZone"></div>
+    </section>
+
+    <section class="card section">
+      <h2>Respira un momento</h2>
+      <p class="sub">Sí, ya sé. esto parece tonto pero igual funciona.</p>
+
+      <div class="breath-wrap">
+        <div id="breathCat" class="breath-cat">lista</div>
+        <div class="controls">
+          <button class="mini" onclick="toggleBreathing()" id="breathButton">empezar</button>
+          <button class="mini" onclick="restartBreathing()">otra vez</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card section">
+      <h2>Una canción para bajar un poco el ruido</h2>
+      <p class="sub">No tienes que hacer nada. Solo ponla y quédate aquí un rato.</p>
+
+      <div class="song">
+        <div class="song-title">Dale play, bonita</div>
+        <p class="song-copy">
+          Esta la escogí para acompañarte un rato.
+        </p>
+
+        <div class="video-wrap">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/UZQnaDDD7qA?rel=0&modestbranding=1"
+            title="Canción para bonita"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="card section">
+      <h2>Tetris para no pensar</h2>
+      <p class="sub">Acomoda las piezas y completa filas para hacerlas desaparecer. Cada cinco líneas subes de nivel y las piezas caen más rápido. Trata de llegar tan lejos como puedas sin dejar que los bloques alcancen la parte de arriba.</p>
+
+      <div class="tetris-rules">
+        <span><strong>← →</strong> mover</span>
+        <span><strong>↻</strong> girar</span>
+        <span><strong>↓</strong> bajar</span>
+        <span><strong>⇊</strong> soltar</span>
+      </div>
+
+      <div id="tetris" class="tetris"></div>
+
+      <div class="tetris-info">
+        <span>Líneas: <strong id="lines">0</strong></span>
+        <span>Nivel: <strong id="level">1</strong></span>
+        <span>Puntos: <strong id="score">0</strong></span>
+        <button class="mini" onclick="resetTetris()">reiniciar</button>
+      </div>
+
+      <div class="tetris-controls">
+        <button onclick="movePiece(-1)" aria-label="Mover a la izquierda" title="Izquierda">←</button>
+        <button onclick="rotatePiece()" aria-label="Girar pieza" title="Girar">↻</button>
+        <button onclick="movePiece(1)" aria-label="Mover a la derecha" title="Derecha">→</button>
+        <button onclick="dropPiece()" aria-label="Bajar una fila" title="Bajar">↓</button>
+        <button onclick="hardDrop()" aria-label="Bajada rápida" title="Bajada rápida">⇊</button>
+      </div>
+    </section>
+
+    <section class="card section">
+      <h2>Una cosa y ya</h2>
+      <p class="sub">Toca el botón si quieres que te deje una mini misión.</p>
+      <div id="fortune" class="message">No te voy a poner a “manifestar”. Tranquila.</div>
+      <div class="controls fortune-controls">
+        <button class="mini" onclick="newFortune()">dame una</button>
+      </div>
+    </section>
+
+    <div class="footer">
+      Aquí estoy para ti, bonita.<br>
+      No hace falta que yo esté ahí para acompañarte un rato.<br>
+      <p class="final-message">No todos los días son fáciles, pero si está en mí ayudar a que cada día sea mejor para ti, no dudes en que lo haré.</p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
